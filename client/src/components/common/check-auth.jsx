@@ -11,13 +11,6 @@ function CheckAuth({ isAuthenticated, user, children }) {
   }
 
   if (
-    user?.id !== null &&
-    location.pathname.includes("admin")
-  ) {
-    return <Navigate to="/shop/home" />;
-  }
-
-  if (
     !isAuthenticated &&
     (
       location.pathname.includes("/shop/checkout") ||
@@ -53,6 +46,13 @@ function CheckAuth({ isAuthenticated, user, children }) {
     location.pathname.includes("shop")
   ) {
     return <Navigate to="/admin/dashboard" />;
+  }
+
+  if (
+    (user?.id == null) &&
+    location.pathname.includes("admin")
+  ) {
+    return <Navigate to="/shop/home" />;
   }
 
   return <>{children}</>;
