@@ -15,6 +15,10 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
+const path = require("path");
+
+
+
 
 //create a database connection
 // Hanzla727%40
@@ -26,17 +30,20 @@ mongoose
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const _dirname = path.resolve();
+
+
 app.use(
   cors({
     origin: process.env.CLIENT_BASE_URL,
-    methods: ["GET", "POST", "DELETE", "PUT"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-    ],
+    // methods: ["GET", "POST", "DELETE", "PUT"],
+    // allowedHeaders: [
+    //   "Content-Type",
+    //   "Authorization",
+    //   "Cache-Control",
+    //   "Expires",
+    //   "Pragma",
+    // ],
     credentials: true,
   })
 );
@@ -55,5 +62,11 @@ app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
+
+
+app.use(express.static(path.join(_dirname, "/client/dist")));
+app.get('*', (req,res)=> {
+  res.sendFile(path.resolve(_dirname, "client", "dist", "index.html"));
+});
 
 app.listen(PORT, () => console.log(`App is running in ${process.env.NODE_MODE} mode at ${PORT} port.`));
